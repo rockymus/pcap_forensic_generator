@@ -1,0 +1,60 @@
+version: '3'
+services:
+  wordpressdb:
+    container_name: wordpressdb
+    image: mysql:5.7
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: Initial11
+    networks:
+      - wpsite
+  wordpress:
+    container_name: wordpress
+    depends_on: 
+      - wordpressdb
+    image: wordpress:5.6.0-apache
+    ports:
+      - '80:80'
+    restart: always
+    environment: 
+      WORDPRESS_DB_HOST: wordpressdb:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: Initial11
+      WORDPRRESS_DB_NAME: wordpress
+    networks:
+      - wpsite
+  # phpmyadmin:
+  #   container_name: phpmyadmin
+  #   image: phpmyadmin:5.0.4-apache
+  #   restart: always
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     PMA_ARBITRARY: 1
+  #   networks:
+  #     - wpsite
+  #   ports: 
+  #     - 8080:80
+  # wpscan:
+  #   container_name: wpscan
+  #   image: wpscanteam/wpscan
+  #   entrypoint: tail -F anything
+  #   depends_on: 
+  #     - wordpress
+  #     - wordpressdb
+  #   networks: 
+  #     - wpsite
+networks:
+  wpsite:
+    name: wpsite
+    driver: bridge
+    ipam:
+      driver: default
+      config: 
+        - subnet: 172.100.0.0/16
+    driver_opts: 
+      com.docker.network.bridge.name: br_wp_interface
