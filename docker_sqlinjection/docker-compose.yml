@@ -1,0 +1,35 @@
+version: '2'
+services:
+ web:
+   image: vulhub/thinkphp:5.0.9
+   depends_on:
+    - mysql
+   ports:
+    - "80:80"
+   volumes:
+    - ./www/controller:/var/www/application/index/controller
+    - ./www/model:/var/www/application/index/model
+    - ./www/database.php:/var/www/application/database.php
+   networks:
+    sqli_net:
+      ipv4_address: 172.20.0.3
+ mysql:
+   image: mysql:5.5
+   environment: 
+    - MYSQL_ROOT_PASSWORD=cXPbgnDK4IFc
+    - MYSQL_DATABASE=cat
+   volumes:
+    - ./www/init.sql:/docker-entrypoint-initdb.d/init.sql
+   networks:
+    sqli_net:
+      ipv4_address: 172.20.0.2
+networks:
+  sqli_net:
+    name: sqli_net
+    driver: bridge
+    ipam:
+      driver: default
+      config: 
+        - subnet: 172.20.0.0/16
+    driver_opts: 
+      com.docker.network.bridge.name: br_sqli_int

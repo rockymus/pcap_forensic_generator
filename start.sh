@@ -22,6 +22,10 @@ case $ATTACK_TYPE in
         cd docker_php
         ./script.sh
         ;;
+    3)
+        cd docker_sqlinjection
+        ./script.sh
+        ;;
     *)
         echo Unknown
 esac
