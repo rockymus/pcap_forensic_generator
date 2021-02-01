@@ -10,6 +10,7 @@ echo 'Choose from the options below:'
 echo '1) Brute-force attack'
 echo '2) ThinkPHP - Multiple PHP injection RCEs'
 echo '3) SQL Injection'
+echo '4) WebLogic - RCE'
 
 read -p "Enter attack type: " ATTACK_TYPE
 
@@ -24,6 +25,10 @@ case $ATTACK_TYPE in
         ;;
     3)
         cd docker_sqlinjection
+        ./script.sh
+        ;;
+    4)
+        cd docker_weblogic
         ./script.sh
         ;;
     *)

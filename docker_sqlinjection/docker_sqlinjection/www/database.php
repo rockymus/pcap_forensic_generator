@@ -4,7 +4,7 @@ return [
     'hostname'       => 'mysql',
     'database'       => 'cat',
     'username'       => 'root',
-    'password'       => 'PyYTjXrk3IMp',
+    'password'       => 'wNpAFoSndKjA',
     'hostport'       => '',
     'dsn'            => '',
     'params'         => [],
