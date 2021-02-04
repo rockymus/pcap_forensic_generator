@@ -7,10 +7,11 @@ if [[ $UID != 0 ]]; then
 fi
 echo 'Welcome to automated generator of assignments for digital forensics analysis!'
 echo 'Choose from the options below:'
-echo '1) Brute-force attack'
+echo '1) Wordpress brute-force attack'
 echo '2) ThinkPHP - Multiple PHP injection RCEs'
 echo '3) SQL Injection'
 echo '4) WebLogic - RCE'
+echo '5) MySQL brute-force'
 
 read -p "Enter attack type: " ATTACK_TYPE
 
@@ -32,6 +33,8 @@ case $ATTACK_TYPE in
         ./script.sh
         ;;
     *)
-        echo Unknown
+        cd docker_mysql
+        ./script.sh
+        ;;
 esac
 

